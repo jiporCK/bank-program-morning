@@ -32,6 +32,8 @@ public class App {
             switch (op) {
                 case 1 -> controller.createAccount();
                 case 2 -> controller.findAccountById();
+                case 3 -> controller.transferMoney();
+                case 4 -> controller.showTransactionDetails();
                 default -> System.out.println("Invalid option!");
             }
 
