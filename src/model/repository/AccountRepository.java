@@ -5,6 +5,7 @@ import model.db.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountRepository {
@@ -34,6 +35,44 @@ public class AccountRepository {
 
         connection.close();
         ps.close();
+    }
+
+    public Account findById(Integer id) throws SQLException {
+        if (!existsById(id)) {
+            throw new SQLException("ID does not exist");
+        }
+
+        try (Connection conn = DbConnection.getInstance()) {
+            String sql = """
+                    select * from accounts
+                    where account_id = ?
+                    """;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return new Account(
+                                rs.getInt("account_id"),
+                                rs.getString("owner_name"),
+                                rs.getDouble("balance")
+                        );
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean existsById(Integer id) throws SQLException {
+        try (Connection conn = DbConnection.getInstance()) {
+            String sql = "select 1 from accounts where account_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    return rs.next();
+                }
+            }
+        }
     }
 
 }

@@ -1,19 +1,13 @@
 import controller.AccountController;
-import model.Account;
-import model.db.DbConnection;
 import model.repository.AccountRepository;
 import model.service.AccountService;
 import view.AccountView;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Scanner;
 
 public class App {
 
-    private static final AccountRepository repository = new AccountRepository(
-//            DbConnection.getInstance()
-    );
+    private static final AccountRepository repository = new AccountRepository();
     private static final AccountService service = new AccountService(repository);
     private static final AccountView view = new AccountView();
     private static final AccountController controller = new AccountController(
@@ -37,6 +31,7 @@ public class App {
 
             switch (op) {
                 case 1 -> controller.createAccount();
+                case 2 -> controller.findAccountById();
                 default -> System.out.println("Invalid option!");
             }
 

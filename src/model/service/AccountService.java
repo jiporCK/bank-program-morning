@@ -27,4 +27,13 @@ public class AccountService {
         }
     }
 
+    public Account findById(Integer id) {
+        try {
+            return repository.findById(id);
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
 }
