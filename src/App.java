@@ -1,18 +1,14 @@
 import controller.AccountController;
 import model.repository.AccountRepository;
 import model.service.AccountService;
+import util.Singleton;
 import view.AccountView;
 
 import java.util.Scanner;
 
 public class App {
 
-    private static final AccountRepository repository = new AccountRepository();
-    private static final AccountService service = new AccountService(repository);
-    private static final AccountView view = new AccountView();
-    private static final AccountController controller = new AccountController(
-            view, service
-    );
+    private static final AccountController controller = Singleton.getControllerInstance();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
